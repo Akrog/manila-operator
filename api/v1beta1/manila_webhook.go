@@ -44,6 +44,7 @@ type ManilaDefaults struct {
 	ShareContainerImageURL     string
 	DBPurgeAge                 int
 	DBPurgeSchedule            string
+	APITimeout                 int
 }
 
 var manilaDefaults ManilaDefaults
@@ -61,6 +62,7 @@ func SetupDefaults() {
 		ShareContainerImageURL:     util.GetEnvVar("RELATED_IMAGE_MANILA_SHARE_IMAGE_URL_DEFAULT", ManilaShareContainerImage),
 		DBPurgeAge:                 DBPurgeDefaultAge,
 		DBPurgeSchedule:            DBPurgeDefaultSchedule,
+		APITimeout:                 APITimeoutDefault,
 	}
 
 	manilalog.Info("Manila defaults initialized", "defaults", manilaDefaults)
@@ -115,6 +117,10 @@ func (spec *ManilaSpecBase) Default() {
 
 	if spec.DBPurge.Schedule == "" {
 		spec.DBPurge.Schedule = manilaDefaults.DBPurgeSchedule
+	}
+
+	if spec.APITimeout == 0 {
+		spec.APITimeout = manilaDefaults.APITimeout
 	}
 }
 
